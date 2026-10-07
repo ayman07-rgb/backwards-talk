@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Talk Backwards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="brand">
+      <h1>Talk <span class="flip">Backwards</span></h1>
+      <span id="status" class="status" data-state="connecting">Connecting…</span>
+    </header>
+
+    <!-- 1. HOME: pick a name, create or join a room -->
+    <section id="screen-home" class="card screen">
+      <label for="name">Your name</label>
+      <input id="name" type="text" maxlength="20" placeholder="Sara" autocomplete="nickname" />
+
+      <button id="btn-create" class="btn primary">Create a room</button>
+
+      <div class="divider"><span>or join a friend</span></div>
+
+      <label for="code">Room code</label>
+      <div class="row">
+        <input id="code" type="text" maxlength="4" placeholder="ABCD" autocapitalize="characters" autocomplete="off" />
+        <button id="btn-join" class="btn">Join</button>
+      </div>
+      <p id="home-error" class="error" role="alert"></p>
+    </section>
+
+    <!-- 2. LOBBY: waiting for the second player -->
+    <section id="screen-lobby" class="card screen" hidden>
+      <p class="muted">Share this code with your friend</p>
+      <p id="lobby-code" class="big-code">----</p>
+      <button id="btn-copy" class="btn">Copy invite link</button>
+      <p class="muted pulse-text">Waiting for player 2…</p>
+      <button id="btn-leave-lobby" class="btn ghost">Leave room</button>
+    </section>
+
+    <!-- 3. GAME -->
+    <section id="screen-game" class="screen" hidden>
+      <div class="card scoreboard">
+        <div id="scores" class="scores"></div>
+        <span id="round-label" class="muted"></span>
+      </div>
+
+      <!-- Speaker: type the secret word, record it, preview the reversed audio, send -->
+      <div id="panel-speak" class="card panel" hidden>
+        <h2>Your turn to speak</h2>
+        <p class="muted">Type the secret word (only you can see it), then say it out loud.</p>
+        <label for="secret">Secret word or phrase</label>
+        <input id="secret" type="text" maxlength="40" placeholder="Pineapple" autocomplete="off" />
+
+        <button id="btn-record" class="btn record">Start recording</button>
+        <p id="rec-timer" class="muted" aria-live="polite"></p>
+
+        <div id="preview" hidden>
+          <p class="muted">This is what your friend will hear:</p>
+          <audio id="preview-audio" controls></audio>
+          <div class="row">
+            <button id="btn-rerecord" class="btn ghost">Record again</button>
+            <button id="btn-send" class="btn primary">Send to friend</button>
+          </div>
+        </div>
+        <p id="speak-error" class="error" role="alert"></p>
+      </div>
+
+      <!-- Shown to whoever is waiting -->
+      <div id="panel-wait" class="card panel" hidden>
+        <h2 id="wait-title"></h2>
+        <p id="wait-text" class="muted"></p>
+        <ul id="wait-guesses" class="guesses"></ul>
+      </div>
+
+      <!-- Guesser: listen and guess -->
+      <div id="panel-guess" class="card panel" hidden>
+        <h2>What was said?</h2>
+        <p class="muted">Listen as many times as you like.</p>
+        <audio id="guess-audio" controls></audio>
+        <label for="guess">Your guess</label>
+        <div class="row">
+          <input id="guess" type="text" maxlength="40" placeholder="Type your guess" autocomplete="off" />
+          <button id="btn-guess" class="btn primary">Guess</button>
+        </div>
+        <p id="attempts" class="muted"></p>
+        <ul id="guess-history" class="guesses"></ul>
+        <button id="btn-giveup" class="btn ghost">Reveal the answer</button>
+      </div>
+
+      <!-- Round result -->
+      <div id="panel-result" class="card panel" hidden>
+        <h2 id="result-title"></h2>
+        <p id="result-word" class="big-word"></p>
+        <button id="btn-next" class="btn primary">Next round</button>
+      </div>
+
+      <button id="btn-leave-game" class="btn ghost leave">Leave room</button>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

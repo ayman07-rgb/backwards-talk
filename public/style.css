@@ -1,0 +1,139 @@
+/* Talk Backwards — styles
+   Palette: ink #1d1b3a · paper #f1eefb · pink #ff4f81 · teal #19c2a9 · sun #ffc83d */
+:root {
+  --ink: #1d1b3a;
+  --ink-soft: #5b5878;
+  --paper: #f1eefb;
+  --card: #ffffff;
+  --line: #d9d4ee;
+  --pink: #ff4f81;
+  --teal: #19c2a9;
+  --sun: #ffc83d;
+  --radius: 14px;
+  --display: 'Bricolage Grotesque', 'Trebuchet MS', system-ui, sans-serif;
+  --body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  line-height: 1.5;
+}
+
+.app {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  display: grid;
+  gap: 16px;
+}
+
+/* ---- Brand: the one memorable thing is the mirrored word ---- */
+.brand { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 7vw, 2.4rem);
+  letter-spacing: -0.02em;
+}
+.flip { display: inline-block; transform: scaleX(-1); color: var(--pink); }
+
+.status { font-size: .8rem; padding: 4px 10px; border-radius: 999px; background: var(--sun); white-space: nowrap; }
+.status[data-state="online"] { background: var(--teal); }
+.status[data-state="offline"] { background: var(--pink); }
+
+/* ---- Cards & text ---- */
+.card {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: grid;
+  gap: 12px;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+h2 { margin: 0; font-family: var(--display); font-size: 1.35rem; }
+p { margin: 0; }
+.muted { color: var(--ink-soft); font-size: .95rem; }
+.error { color: #c0173f; font-size: .9rem; min-height: 1.2em; }
+label { font-weight: 700; font-size: .9rem; }
+
+/* ---- Inputs & buttons ---- */
+input[type="text"] {
+  width: 100%;
+  padding: 12px 14px;
+  font: inherit;
+  color: var(--ink);
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+}
+input[type="text"]:focus-visible, .btn:focus-visible, audio:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 2px;
+}
+#code { text-transform: uppercase; letter-spacing: .3em; text-align: center; font-weight: 700; }
+
+.row { display: flex; gap: 10px; }
+.row > input { flex: 1; min-width: 0; }
+
+.btn {
+  font: inherit;
+  font-weight: 700;
+  color: var(--ink);
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  padding: 12px 18px;
+  cursor: pointer;
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn.primary { background: var(--pink); }
+.btn.ghost { border-color: var(--line); background: transparent; color: var(--ink-soft); }
+.btn.record { background: var(--sun); padding: 16px; font-size: 1.05rem; }
+.btn.record.is-recording { background: var(--pink); animation: pulse 1s ease-in-out infinite; }
+.leave { justify-self: center; }
+
+@keyframes pulse { 50% { transform: scale(1.03); } }
+
+.divider { display: flex; align-items: center; gap: 10px; color: var(--ink-soft); font-size: .85rem; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 2px; background: var(--line); }
+
+/* ---- Lobby ---- */
+.screen { animation: none; }
+.big-code {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 3.4rem;
+  letter-spacing: .2em;
+  text-align: center;
+  padding-left: .2em;
+}
+.pulse-text { animation: fade 1.6s ease-in-out infinite; text-align: center; }
+@keyframes fade { 50% { opacity: .4; } }
+
+/* ---- Game ---- */
+.scoreboard { grid-template-columns: 1fr auto; align-items: center; padding: 14px 20px; }
+.scores { display: flex; gap: 18px; flex-wrap: wrap; }
+.score { display: flex; align-items: baseline; gap: 8px; }
+.score b { font-family: var(--display); font-size: 1.6rem; }
+.score.is-speaker::before { content: '🎤'; }
+.score.is-me span { text-decoration: underline; text-decoration-color: var(--teal); text-decoration-thickness: 3px; }
+
+audio { width: 100%; }
+.guesses { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; flex-wrap: wrap; }
+.guesses li { background: var(--paper); border-radius: 999px; padding: 4px 12px; text-decoration: line-through; color: var(--ink-soft); }
+
+.big-word { font-family: var(--display); font-weight: 800; font-size: 2rem; word-break: break-word; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn.record.is-recording, .pulse-text { animation: none; }
+}
